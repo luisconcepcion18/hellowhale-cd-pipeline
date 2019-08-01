@@ -30,7 +30,7 @@ pipeline {
 
 	stage('Deployment to k8') {
             steps {
-                sh 'kubectl set image deployments/hellowhale nginxhellowhale=luisconcepcion18/nginxhellowhale:${BUILD_NUMBER}'                
+                sh 'kubectl --kubeconfig=/home/ubuntu/.kube/config-file set image deployments/hellowhale nginxhellowhale=luisconcepcion18/nginxhellowhale:${BUILD_NUMBER}'                
             }
         }
 
