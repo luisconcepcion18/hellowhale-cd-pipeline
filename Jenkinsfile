@@ -59,7 +59,7 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: '/home/jenkins/workspace/hellowhale-cd_master/html.tar.gz',
+                                        sourceFiles: 'html.tar.gz',
                                         //removePrefix: '/home/jenkins/workspace/hellowhale-cd_master/',
                                         remoteDirectory: '/tmp',
 					execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf /tmp/html.tar.gz && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start && rm -r /tmp/html'
