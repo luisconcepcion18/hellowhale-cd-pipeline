@@ -29,8 +29,8 @@ pipeline {
                                     sshTransfer(
                                         sourceFiles: 'html.tar.gz',
                                        // removePrefix: 'home/jenkins/workspace/hellowhale-cd_master/',
-                                        remoteDirectory: '/var/www/html/',
-                                        execCommand: '/etc/init.d/apache2 stop && tar -xvzf /var/www/html/html.tar.gz && /etc/init.d/apache2 start'
+                                        remoteDirectory: '/tmp/',
+                                        execCommand: '/etc/init.d/apache2 stop && tar -xvzf /tmp/html.tar.gz --directory /var/www/html/ && /etc/init.d/apache2 start'
                                     )
                                 ]
                             )
@@ -62,7 +62,7 @@ pipeline {
                                         sourceFiles: 'html.tar.gz',
                                         //removePrefix: '/home/jenkins/workspace/hellowhale-cd_master/',
                                         remoteDirectory: '/tmp',
-					execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && mv /tmp/html.tar.gz /var/www/html/ && tar -xvzf /var/www/html/html.tar.gz && /etc/init.d/apache2 start'
+					execCommand: '/etc/init.d/apache2 stop && tar -xvzf /tmp/html.tar.gz --directory /var/www/html/ && /etc/init.d/apache2 start'
                                     )
                                 ]
                             )
