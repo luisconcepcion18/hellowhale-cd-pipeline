@@ -5,6 +5,7 @@ pipeline {
             steps {
                 echo 'Running build automation'
 		sh 'tar -cvzf /home/jenkins/workspace/hellowhale-cd_master/html.tar.gz *'
+		archiveArtifacts artifacts: 'html.tar.gz'
                 
             }
         }
