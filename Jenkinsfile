@@ -1,39 +1,71 @@
 pipeline {
-    agent any 
+    agent any
     stages {
         stage('Build') {
             steps {
-                // Download the code
-                checkout scm
-                // Compile the main class
-                //sh 'javac -d target -sourcepath src/main/java src/main/java/com/example/math/Calculator.java'
+                echo 'Running build automation'
+                
             }
         }
-        stage('Create & tag image') {
+        stage('DeployToStaging') {
+            when {
+                branch 'master'
+            }
             steps {
-                // Compile the tests
-		sh 'docker build --no-cache --rm --tag luisconcepcion18/nginxhellowhale:${BUILD_NUMBER} .'                
+                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    sshPublisher(
+                        failOnError: true,
+                        continueOnError: false,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'staging',
+                                sshCredentials: [
+                                    username: "$USERNAME",
+                                    encryptedPassphrase: "$USERPASS"
+                                ], 
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: '~/hellowhale-cd-pipeline/html',
+                                        removePrefix: '~/hellowhale-cd-pipeline/',
+                                        remoteDirectory: '/tmp',
+                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
             }
         }
-
-	stage('Dockerhub login') {
+        stage('DeployToProduction') {
+            when {
+                branch 'master'
+            }
             steps {
-                sh 'docker login -u luisconcepcion18 -p ${DOCKER_HUB}'                
+                input 'Does the staging environment look OK?'
+                milestone(1)
+                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    sshPublisher(
+                        failOnError: true,
+                        continueOnError: false,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'production',
+                                sshCredentials: [
+                                    username: "$USERNAME",
+                                    encryptedPassphrase: "$USERPASS"
+                                ], 
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: '~/hellowhale-cd-pipeline/html',
+                                        removePrefix: '~/hellowhale-cd-pipeline/',
+                                        remoteDirectory: '/tmp',
+                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
             }
         }
-
-	stage('Dockerhub push image') {
-            steps {
-                sh 'docker push luisconcepcion18/nginxhellowhale:${BUILD_NUMBER}'                
-            }
-        }
-
-	stage('Deployment to k8') {
-            steps {
-                sh 'kubectl --kubeconfig=/home/ubuntu/.kube/config-file set image deployments/hellowhale nginxhellowhale=luisconcepcion18/nginxhellowhale:${BUILD_NUMBER}'                
-            }
-        }
-
-
-    }
-}
