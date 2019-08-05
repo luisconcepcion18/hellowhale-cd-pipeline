@@ -25,8 +25,8 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: '~/hellowhale-cd-pipeline/html',
-                                        removePrefix: '~/hellowhale-cd-pipeline/',
+                                        sourceFiles: '~/workspace/hellowhale-cd-pipeline/html',
+                                        removePrefix: '~/workspace/hellowhale-cd-pipeline/',
                                         remoteDirectory: '/tmp',
                                         execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
                                     )
@@ -57,8 +57,8 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: '~/hellowhale-cd-pipeline/html',
-                                        removePrefix: '~/hellowhale-cd-pipeline/',
+                                        sourceFiles: '~/workspace/hellowhale-cd-pipeline/html',
+                                        removePrefix: '~/workspace/hellowhale-cd-pipeline/',
                                         remoteDirectory: '/tmp',
                                         execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
                                     )
