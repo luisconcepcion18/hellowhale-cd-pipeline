@@ -4,6 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
+		sh 'tar -cvzf html.tar.gz *'
                 
             }
         }
@@ -25,10 +26,10 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: '~/workspace/hellowhale-cd-pipeline/html',
+                                        sourceFiles: '~/workspace/hellowhale-cd-pipeline/html.tar.gz',
                                         removePrefix: '~/workspace/hellowhale-cd-pipeline/',
                                         remoteDirectory: '/tmp',
-                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
+                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf html.tar.gz /tmp/ && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
                                     )
                                 ]
                             )
@@ -57,10 +58,10 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: '~/workspace/hellowhale-cd-pipeline/html',
+                                        sourceFiles: '~/workspace/hellowhale-cd-pipeline/html.tar.gz',
                                         removePrefix: '~/workspace/hellowhale-cd-pipeline/',
                                         remoteDirectory: '/tmp',
-                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
+					execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf html.tar.gz /tmp/ && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
                                     )
                                 ]
                             )
