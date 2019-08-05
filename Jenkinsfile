@@ -29,7 +29,7 @@ pipeline {
                                         sourceFiles: '~/workspace/hellowhale-cd-pipeline/html.tar.gz',
                                         removePrefix: '~/workspace/hellowhale-cd-pipeline/',
                                         remoteDirectory: '/tmp',
-                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf html.tar.gz /tmp/ && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
+                                        execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf /tmp/html.tar.gz /tmp/ && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
                                     )
                                 ]
                             )
@@ -61,7 +61,7 @@ pipeline {
                                         sourceFiles: '~/workspace/hellowhale-cd-pipeline/html.tar.gz',
                                         removePrefix: '~/workspace/hellowhale-cd-pipeline/',
                                         remoteDirectory: '/tmp',
-					execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf html.tar.gz /tmp/ && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
+					execCommand: '/etc/init.d/apache2 stop && rm -rf /var/www/html/* && tar -xvzf /tmp/html.tar.gz /tmp/ && cp -r /tmp/html/* -d /var/www/html/ && /etc/init.d/apache2 start'
                                     )
                                 ]
                             )
